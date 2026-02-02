@@ -1,0 +1,16 @@
+.sidebar-toggle {
+    display: flex;
+    justify-content: flex-end;
+    button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin-bottom: 1rem;
+        align-items: end;
+    }
+
+    img {
+        filter: invert(100%);
+    }
+}
