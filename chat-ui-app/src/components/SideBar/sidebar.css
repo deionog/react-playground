@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 .sidebar-toggle {
     display: flex;
     justify-content: flex-end;
@@ -13,4 +15,10 @@
     img {
         filter: invert(100%);
     }
+}
+
+.btn {
+    @apply before:absolute before:bg-zinc-800 before:inset-0.5 before:content-normal before:rounded-sm before:-z-1 hover:scale-105 transition-transform;
+    @apply after:text-sm after:content-[attr(data-label)];
+
 }
