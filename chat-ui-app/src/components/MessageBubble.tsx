@@ -1,9 +1,9 @@
 // src/components/MessageBubble.tsx
-import ReactMarkdown from "react-markdown";
-import type { Message } from "../types";
+// import ReactMarkdown from "react-markdown";
 import clsx from "clsx";
+import type { UIDataTypes, UIMessage, UITools } from "ai";
 
-export function MessageBubble({ message, showCursor }: { message: Message, showCursor?: boolean }) {
+export function MessageBubble({ message }: { message: UIMessage<unknown, UIDataTypes, UITools> }) {
   const isUser = message.role === "user";
 
   return (
@@ -21,10 +21,13 @@ export function MessageBubble({ message, showCursor }: { message: Message, showC
             : "text-zinc-100"
         )}
       >
-        <ReactMarkdown>
-            {message.content}
-        </ReactMarkdown>
-        {showCursor && <span className="inline-block animate-pulse">▍</span>}
+        {message.parts.map((part, i) => {
+            switch (part.type) {
+              case 'text':
+                return <div key={`${message.id}-${i}`}>{part.text}</div>;
+            }
+          })}
+        {/*showCursor && <span className="inline-block animate-pulse">▍</span>*/}
       </div>
     </div>
   );

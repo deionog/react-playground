@@ -12,5 +12,5 @@ export function mockStream(
       clearInterval(interval);
       onDone();
     }
-  }, 25);
+  }, 10);
 };

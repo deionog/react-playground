@@ -1,16 +1,14 @@
 // src/components/PromptInput.tsx
-import { useState } from "react";
-
-export function PromptInput({ onSend, disabled,}: {
-  onSend: (v: string) => void
+export function PromptInput({ onSend, input, setInput, disabled }: {
+  onSend: (value: string) => void,
+  input: string,
+  setInput: (value: string) => void,
   disabled: boolean
 }) {
-  const [value, setValue] = useState("")
-
   function handleSubmit() {
-    if (!value.trim()) return;
-    onSend(value);
-    setValue("");
+    if (!input.trim()) return;
+    onSend(input);
+    setInput("");
   }
 
   return (
@@ -21,9 +19,9 @@ export function PromptInput({ onSend, disabled,}: {
                     className="flex-1 resize-none bg-transparent text-[15px] leading-relaxed text-zinc-100 placeholder:text-zinc-500 focus:outline-none"
                     rows={1}
                     placeholder="Send a message..."
-                    value={value}
+                    value={input}
                     disabled={disabled}
-                    onChange={e => setValue(e.target.value)}
+                    onChange={e => setInput(e.target.value)}
                     onKeyDown={e => {
                     if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault()

@@ -1,24 +1,51 @@
 // src/components/ChatLayout.tsx
-import { MessageList } from "./MessageList"
-import { PromptInput } from "./PromptInput"
-import { useChat } from "../hooks/useChat"
-import { ChatHeader } from "./ChatHeader"
-import { Sidebar } from "./SideBar/SideBar"
+import { useState } from "react"
+import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport } from 'ai';
 
-export function ChatLayout() {
-  const { messages, sendMessage, isStreaming } = useChat()
+
+/*const chatTransport = new DefaultChatTransport({
+  api: 'http://[::1]:8080/api/chat',
+});*/
+
+const ChatLayout = () => {
+  const { messages, sendMessage } = useChat({
+    transport: new DefaultChatTransport({
+      api: 'http://[::1]:8080/api/chat',
+    })
+  });
+  const [input, setInput] = useState('');
 
   return (
-    <div className="flex h-screen bg-zinc-950 text-white">
-      {/*<div className="hidden md:block w-65" />*/}
-        <Sidebar />
-      <main className="flex flex-col flex-1">
-        <ChatHeader />
-        <MessageList messages={messages} isStreaming={isStreaming} />
-        <PromptInput onSend={sendMessage} disabled={isStreaming} />
-      </main>
-      {/* Right gutter */}
-      <div className="hidden lg:block w-15" />
+    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
+      {messages.map(message => (
+        <div key={message.id} className="whitespace-pre-wrap">
+          {message.role === 'user' ? 'User: ' : 'AI: '}
+          {message.parts.map((part, i) => {
+            switch (part.type) {
+              case 'text':
+                return <div key={`${message.id}-${i}`}>{part.text}</div>;
+            }
+          })}
+        </div>
+      ))}
+
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          sendMessage({ text: input });
+          setInput('');
+        }}
+      >
+        <input
+          className="fixed dark:bg-zinc-900 bottom-0 w-full max-w-md p-2 mb-8 border border-zinc-300 dark:border-zinc-800 rounded shadow-xl"
+          value={input}
+          placeholder="Say something..."
+          onChange={e => setInput(e.currentTarget.value)}
+        />
+      </form>
     </div>
-  )
+  );
 }
+
+export default ChatLayout;

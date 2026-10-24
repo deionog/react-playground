@@ -1,12 +1,8 @@
-import sidebarBtn from '../../assets/sidebar_17261359.png'
 import './sidebar.css';
 
 export function SideBarHeader() {
   return (
     <div className="p-3">
-        <div className="sidebar-toggle">
-            <button ><img src={sidebarBtn} alt="Sidebar Button" className="size-6 shrink-0" /></button>
-        </div>
         <div className='w-full flex justify-center items-center'>
           <button data-label="+ New Chat" className="btn w-full
           cursor-pointer
